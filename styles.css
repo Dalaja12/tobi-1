@@ -6,30 +6,6 @@
 /* ============================================
    RESET Y BASE
    ============================================ */
-@media screen and (max-width:768px){
-
-#statsTab{
-
-display:flex !important;
-visibility:visible !important;
-opacity:1 !important;
-
-position:fixed !important;
-
-top:20px !important;
-left:10px !important;
-
-width:50px !important;
-height:50px !important;
-
-background:red !important;
-
-color:#fff !important;
-
-z-index:99999999 !important;
-
-}
-}
 
    * {
     margin: 0;
@@ -3929,6 +3905,8 @@ body.fainted #mouth {
         visibility:visible !important;
     }
 }
+
+
 
 /* ============================================
    SCROLL PERSONALIZADO
