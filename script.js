@@ -346,131 +346,39 @@ function blockActions(disable) {
 
 //Hacer que el botón 📊 funcione 
 // ============================================
-// TOGGLE ESTADÍSTICAS - VERSIÓN CON DEBUG
+// TOGGLE ESTADÍSTICAS PARA MÓVIL
 // ============================================
 
 function toggleStatsPanel() {
     const statsPanel = document.getElementById('statsPanel');
-    if (!statsPanel) {
-        console.error('❌ statsPanel no encontrado');
-        return;
+    if (statsPanel) {
+        statsPanel.classList.toggle('open');
+        // Opcional: vibración en móviles
+        if (navigator.vibrate) navigator.vibrate(10);
     }
-    
-    statsPanel.classList.toggle('open');
-    
-    // Log para debug
-    console.log('📊 Panel toggled:', statsPanel.classList.contains('open') ? 'ABIERTO' : 'CERRADO');
-    
-    // Feedback háptico
-    if (navigator.vibrate) navigator.vibrate(10);
 }
 
-// Verificar que el botón existe y es visible
-function checkStatsButton() {
-    const statsTab = document.getElementById('statsTab');
-    if (!statsTab) {
-        console.error('❌ statsTab no encontrado en el DOM');
-        return;
-    }
-    
-    const rect = statsTab.getBoundingClientRect();
-    const isVisible = rect.width > 0 && rect.height > 0;
-    const computedStyle = window.getComputedStyle(statsTab);
-    
-    console.log('📊 statsTab info:');
-    console.log('  - display:', computedStyle.display);
-    console.log('  - visibility:', computedStyle.visibility);
-    console.log('  - opacity:', computedStyle.opacity);
-    console.log('  - position:', computedStyle.position);
-    console.log('  - top:', computedStyle.top);
-    console.log('  - left:', computedStyle.left);
-    console.log('  - width:', computedStyle.width);
-    console.log('  - height:', computedStyle.height);
-    console.log('  - visible:', isVisible);
-    console.log('  - rect:', rect);
-}
-
-// Configurar al cargar la página
+// Configurar el botón y cerrar al hacer clic fuera
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📱 Inicializando estadísticas...');
-    
     const statsTab = document.getElementById('statsTab');
-    
     if (statsTab) {
-        // Eliminar event listeners previos
-        const newStatsTab = statsTab.cloneNode(true);
-        statsTab.parentNode.replaceChild(newStatsTab, statsTab);
-        
-        // Agregar evento click
-        newStatsTab.addEventListener('click', function(e) {
+        statsTab.addEventListener('click', function(e) {
             e.stopPropagation();
-            e.preventDefault();
-            console.log('🖱️ Click en statsTab');
             toggleStatsPanel();
         });
-        
-        console.log('✅ statsTab configurado correctamente');
-        
-        // Verificar visibilidad después de un momento
-        setTimeout(checkStatsButton, 500);
-    } else {
-        console.error('❌ statsTab NO encontrado en el DOM');
     }
     
-    // Cerrar panel al hacer clic fuera
+    // Cerrar al hacer clic fuera
     document.addEventListener('click', function(e) {
         const statsPanel = document.getElementById('statsPanel');
         const statsTab = document.getElementById('statsTab');
-        
-        if (window.innerWidth <= 768) {
-            if (statsPanel && statsPanel.classList.contains('open')) {
-                if (!statsPanel.contains(e.target) && 
-                    e.target !== statsTab && 
-                    !statsTab?.contains(e.target)) {
-                    statsPanel.classList.remove('open');
-                    console.log('📊 Panel cerrado por clic fuera');
-                }
+        if (statsPanel && statsPanel.classList.contains('open')) {
+            if (!statsPanel.contains(e.target) && e.target !== statsTab && !statsTab?.contains(e.target)) {
+                statsPanel.classList.remove('open');
             }
         }
     });
-    
-    // Verificar cada 2 segundos si el botón es visible (solo en móvil)
-    if (window.innerWidth <= 768) {
-        let checkCount = 0;
-        const interval = setInterval(() => {
-            checkCount++;
-            const statsTab = document.getElementById('statsTab');
-            if (statsTab) {
-                const rect = statsTab.getBoundingClientRect();
-                if (rect.width > 0 && rect.height > 0) {
-                    console.log('✅ statsTab visible - ancho:', rect.width, 'alto:', rect.height);
-                    clearInterval(interval);
-                } else if (checkCount > 10) {
-                    console.warn('⚠️ statsTab NO visible después de 10 verificaciones');
-                    clearInterval(interval);
-                    // Intentar forzar visibilidad
-                    statsTab.style.display = 'flex !important';
-                    statsTab.style.visibility = 'visible !important';
-                    statsTab.style.opacity = '1 !important';
-                    console.log('🔄 Forzando visibilidad de statsTab');
-                }
-            }
-        }, 1000);
-    }
 });
-
-// También ejecutar cuando la ventana cambie de tamaño
-window.addEventListener('resize', function() {
-    if (window.innerWidth <= 768) {
-        const statsTab = document.getElementById('statsTab');
-        if (statsTab) {
-            statsTab.style.display = 'flex';
-            statsTab.style.visibility = 'visible';
-            statsTab.style.opacity = '1';
-        }
-    }
-});
-
 
 
 
