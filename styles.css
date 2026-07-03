@@ -3900,10 +3900,9 @@ body.fainted #mouth {
         width: 80%;
     }
 
-    /* PC oculta pestaña stats */
-    .stats-tab {
-        display: none !important;
-        visibility: hidden !important;
+    .stats-tab{
+        display:flex !important;
+        visibility:visible !important;
     }
 }
 
