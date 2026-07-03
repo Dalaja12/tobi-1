@@ -346,7 +346,7 @@ function blockActions(disable) {
 
 //Hacer que el botón 📊 funcione 
 // ============================================
-// TOGGLE ESTADÍSTICAS PARA MÓVIL
+// TOGGLE ESTADÍSTICAS - VERSIÓN MEJORADA
 // ============================================
 
 function toggleStatsPanel() {
@@ -359,26 +359,31 @@ function toggleStatsPanel() {
     if (navigator.vibrate) navigator.vibrate(10);
 }
 
-// Configurar el botón al cargar la página
+// Configurar al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
     const statsTab = document.getElementById('statsTab');
+    
     if (statsTab) {
-        // Eliminar event listeners antiguos
-        statsTab.removeEventListener('click', toggleStatsPanel);
-        statsTab.addEventListener('click', function(e) {
+        // Eliminar cualquier evento previo
+        const newStatsTab = statsTab.cloneNode(true);
+        statsTab.parentNode.replaceChild(newStatsTab, statsTab);
+        
+        // Agregar el evento correctamente
+        newStatsTab.addEventListener('click', function(e) {
             e.stopPropagation();
+            e.preventDefault();
             toggleStatsPanel();
+            console.log('📊 Botón de estadísticas presionado'); // Para debug
         });
     }
     
-    // Cerrar al hacer clic fuera del panel (solo en móvil)
+    // Cerrar panel al hacer clic fuera (móviles)
     document.addEventListener('click', function(e) {
         const statsPanel = document.getElementById('statsPanel');
         const statsTab = document.getElementById('statsTab');
         
         if (window.innerWidth <= 768) {
             if (statsPanel && statsPanel.classList.contains('open')) {
-                // Si el clic NO fue en el panel ni en el botón
                 if (!statsPanel.contains(e.target) && 
                     e.target !== statsTab && 
                     !statsTab?.contains(e.target)) {
@@ -387,7 +392,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // Forzar visibilidad en móviles (para debug)
+    if (window.innerWidth <= 768) {
+        console.log('📱 Modo móvil detectado - El botón 📊 debería aparecer');
+    }
 });
+
 
 
 
