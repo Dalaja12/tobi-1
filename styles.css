@@ -482,19 +482,25 @@ body.fainted #mouth {
    PESTAÑA DE ESTADÍSTICAS (MÓVIL)
    ============================================ */
 
-/* Botón de estadísticas - siempre visible en móviles */
+
+/* ESTILO BASE - El botón siempre visible en móviles */
 .stats-tab {
     display: none;  /* Oculto por defecto en desktop */
 }
 
-/* En tablets y móviles (<= 768px) */
+/* ============================================
+   PARA TODOS LOS DISPOSITIVOS MÓVILES (≤ 768px)
+   ============================================ */
 @media (max-width: 768px) {
+    /* === BOTÓN ESTADÍSTICAS === */
     .stats-tab {
-        display: flex !important;  /* 👈 FORZAR VISIBILIDAD */
+        display: flex !important;           /* 👈 FORZAR VISIBILIDAD */
+        visibility: visible !important;     /* 👈 FORZAR VISIBILIDAD */
+        opacity: 1 !important;              /* 👈 FORZAR VISIBILIDAD */
         position: fixed;
         top: 15px;
-        left: 10px;  /* Misma posición que el botón de búsqueda pero a la izquierda */
-        background: rgba(0, 0, 0, 0.7);
+        left: 10px;
+        background: rgba(0, 0, 0, 0.75);
         border: 2px solid var(--main-color, #0ff);
         color: var(--main-color, #0ff);
         width: 44px;
@@ -509,25 +515,23 @@ body.fainted #mouth {
         box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
         user-select: none;
         -webkit-tap-highlight-color: transparent;
-    }
-
-    .stats-tab:hover {
-        background: rgba(0, 255, 255, 0.2);
-        transform: scale(1.1);
+        /* Asegurar que no esté oculto por overflow */
+        overflow: visible;
     }
 
     .stats-tab:active {
         transform: scale(0.9);
+        background: rgba(0, 255, 255, 0.3);
     }
 
-    /* Panel de estadísticas (oculto por defecto) */
+    /* === PANEL DE ESTADÍSTICAS === */
     .stats-panel {
         position: fixed;
         top: 70px;
-        left: -320px;  /* 👈 Oculto a la izquierda */
+        left: -320px;                       /* Oculto a la izquierda */
         width: 280px;
         max-height: calc(100vh - 90px);
-        background: rgba(0, 0, 0, 0.92);
+        background: rgba(0, 0, 0, 0.95);
         border: 2px solid var(--main-color, #0ff);
         border-radius: 12px;
         padding: 15px;
@@ -537,26 +541,52 @@ body.fainted #mouth {
         overflow-y: auto;
     }
 
-    /* Panel abierto */
     .stats-panel.open {
-        left: 10px;  /* 👈 Se desliza hacia adentro */
+        left: 10px;                         /* Se muestra */
     }
 
-    /* Móviles muy pequeños */
+    /* ============================================
+       IPHONE 12 MINI Y PANTALLAS PEQUEÑAS (≤ 480px)
+       ============================================ */
     @media (max-width: 480px) {
         .stats-tab {
             top: 12px;
             left: 8px;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
+            width: 38px;                    /* Un poco más pequeño para pantallas pequeñas */
+            height: 38px;
+            font-size: 17px;
         }
 
         .stats-panel {
             top: 60px;
-            left: -300px;
-            width: 250px;
+            left: -290px;
+            width: 240px;
             padding: 12px;
+            max-height: calc(100vh - 80px);
+        }
+
+        .stats-panel.open {
+            left: 5px;
+        }
+    }
+
+    /* ============================================
+       IPHONE SE / PANTALLAS MUY PEQUEÑAS (≤ 375px)
+       ============================================ */
+    @media (max-width: 375px) {
+        .stats-tab {
+            top: 10px;
+            left: 6px;
+            width: 36px;
+            height: 36px;
+            font-size: 16px;
+        }
+
+        .stats-panel {
+            top: 55px;
+            left: -270px;
+            width: 220px;
+            padding: 10px;
         }
 
         .stats-panel.open {
@@ -565,7 +595,9 @@ body.fainted #mouth {
     }
 }
 
-/* En desktop (> 768px): panel visible a la izquierda */
+/* ============================================
+   DESKTOP (> 768px)
+   ============================================ */
 @media (min-width: 769px) {
     .stats-tab {
         display: none !important;
@@ -583,9 +615,9 @@ body.fainted #mouth {
         z-index: 10;
         display: flex;
         flex-direction: column;
-        width: auto;
         max-height: calc(100vh - 40px);
         overflow-y: auto;
+        min-width: 200px;
     }
 }
 
