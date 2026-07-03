@@ -351,30 +351,39 @@ function blockActions(disable) {
 
 function toggleStatsPanel() {
     const statsPanel = document.getElementById('statsPanel');
-    if (statsPanel) {
-        statsPanel.classList.toggle('open');
-        // Opcional: vibración en móviles
-        if (navigator.vibrate) navigator.vibrate(10);
-    }
+    if (!statsPanel) return;
+    
+    statsPanel.classList.toggle('open');
+    
+    // Feedback háptico en móviles
+    if (navigator.vibrate) navigator.vibrate(10);
 }
 
-// Configurar el botón y cerrar al hacer clic fuera
+// Configurar el botón al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
     const statsTab = document.getElementById('statsTab');
     if (statsTab) {
+        // Eliminar event listeners antiguos
+        statsTab.removeEventListener('click', toggleStatsPanel);
         statsTab.addEventListener('click', function(e) {
             e.stopPropagation();
             toggleStatsPanel();
         });
     }
     
-    // Cerrar al hacer clic fuera
+    // Cerrar al hacer clic fuera del panel (solo en móvil)
     document.addEventListener('click', function(e) {
         const statsPanel = document.getElementById('statsPanel');
         const statsTab = document.getElementById('statsTab');
-        if (statsPanel && statsPanel.classList.contains('open')) {
-            if (!statsPanel.contains(e.target) && e.target !== statsTab && !statsTab?.contains(e.target)) {
-                statsPanel.classList.remove('open');
+        
+        if (window.innerWidth <= 768) {
+            if (statsPanel && statsPanel.classList.contains('open')) {
+                // Si el clic NO fue en el panel ni en el botón
+                if (!statsPanel.contains(e.target) && 
+                    e.target !== statsTab && 
+                    !statsTab?.contains(e.target)) {
+                    statsPanel.classList.remove('open');
+                }
             }
         }
     });
